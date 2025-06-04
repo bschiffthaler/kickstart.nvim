@@ -259,15 +259,23 @@ require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'NMAC427/guess-indent.nvim', -- Detect tabstop and shiftwidth automatically
   { 'akinsho/toggleterm.nvim', version = '*', config = true },
-  'R-nvim/R.nvim',
-  --'R-nvim/cmp-r',
-  --{
-  --  'hrsh7th/nvim-cmp',
-  --  config = function()
-  --    require('cmp').setup { sources = { { name = 'cmp_r' } } }
-  --    require('cmp_r').setup {}
-  --  end,
-  --},
+  {
+    'R-nvim/R.nvim',
+    lazy = false,
+    opts = {
+      R_args = { '--quiet', '--no-save' },
+    },
+  },
+  {
+    'snakemake/snakemake',
+    ft = 'snakemake',
+    config = function(plugin)
+      vim.opt.rtp:append(plugin.dir .. '/misc/vim')
+    end,
+    init = function(plugin)
+      require('lazy.core.loader').ftdetect(plugin.dir .. '/misc/vim')
+    end,
+  },
   {
     'mrcjkb/rustaceanvim',
     version = '^6', -- Recommended
@@ -988,23 +996,24 @@ require('lazy').setup({
       ensure_installed = {
         'bash',
         'c',
+        'cpp',
+        'csv',
         'diff',
         'html',
+        'latex',
         'lua',
         'luadoc',
         'markdown',
         'markdown_inline',
+        'python',
         'query',
+        'r',
+        'rnoweb',
+        'rust',
+        'toml',
         'vim',
         'vimdoc',
-        'r',
-        'rust',
-        'cpp',
-        'python',
-        'rnoweb',
         'yaml',
-        'latex',
-        'csv',
       },
       -- Autoinstall languages that are not installed
       auto_install = true,
